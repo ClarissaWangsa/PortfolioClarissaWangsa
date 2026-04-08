@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clarissa Wangsa — Project Manager & Creative Director</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --black: #0a0a0a;
+  --white: #f5f2ed;
+  --accent: #c8b89a;
+  --muted: #6b6760;
+  --line: rgba(200,184,154,0.25);
+  --font-display: 'DM Serif Display', serif;
+  --font-mono: 'DM Mono', monospace;
+  --font-sans: 'Syne', sans-serif;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* ── Cursor ── */
+#cursor {
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+}
+#cursor-ring {
+  width: 36px; height: 36px;
+  border: 1px solid var(--accent);
+  border-radius: 50%;
+  position: fixed;
+  top: 0; left: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0.5;
+  will-change: transform;
+  transition: width 0.25s, height 0.25s, opacity 0.25s;
+}
+#cursor-ring.big { width: 52px; height: 52px; opacity: 0.8; }
+
+/* ── Nav ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 100;
+  padding: 24px 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: linear-gradient(to bottom, rgba(10,10,10,0.92) 0%, transparent 100%);
+}
+.nav-logo {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+.nav-links { display: flex; gap: 40px; list-style: none; }
+.nav-links a {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+.nav-links a:hover { color: var(--white); }
+
+/* ── Noise overlay ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.4;
+}
+
+/* ── Hero ── */
+#hero {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: end;
+  padding: 120px 60px 80px;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+}
+.hero-grid-bg {
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 50%, black 0%, transparent 80%);
+  pointer-events: none;
+}
+.hero-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.25em;
+  color: var(--accent);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  display: flex; align-items: center; gap: 12px;
+}
+.hero-tag::before { content: ''; width: 32px; height: 1px; background: var(--accent); }
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(56px, 7vw, 100px);
+  line-height: 0.95;
+  margin-bottom: 40px;
+}
+h1 em { font-style: italic; color: var(--accent); }
+.hero-right { padding-left: 60px; padding-bottom: 8px; }
+.hero-desc { font-size: 16px; color: var(--muted); max-width: 380px; line-height: 1.8; margin-bottom: 48px; }
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 16px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--white); text-decoration: none;
+  border: 1px solid var(--line); padding: 16px 28px;
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.hero-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--accent); transform: translateX(-100%);
+  transition: transform 0.4s ease; z-index: -1;
+}
+.hero-cta:hover::before { transform: translateX(0); }
+.hero-cta:hover { color: var(--black); border-color: var(--accent); }
+.hero-stats { display: flex; gap: 48px; margin-top: 60px; padding-top: 40px; border-top: 1px solid var(--line); }
+.stat-num { font-family: var(--font-display); font-size: 42px; color: var(--white); line-height: 1; }
+.stat-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); text-transform: uppercase; margin-top: 6px; }
+
+/* ── Section base ── */
+section { padding: 100px 60px; border-bottom: 1px solid var(--line); }
+.section-tag {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 16px;
+  display: flex; align-items: center; gap: 10px;
+}
+.section-tag::before { content: '//'; color: var(--muted); }
+h2 { font-family: var(--font-display); font-size: clamp(36px, 5vw, 60px); line-height: 1.05; margin-bottom: 60px; }
+h2 em { font-style: italic; color: var(--accent); }
+
+/* ── About ── */
+#about { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
+.profile-photo-wrap {
+  width: 100%; aspect-ratio: 3/4; overflow: hidden;
+  border: 1px solid var(--line); position: relative;
+  background: #111; max-width: 320px; margin-bottom: 32px;
+}
+.profile-photo-wrap img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: grayscale(15%); transition: filter 0.4s, transform 0.6s;
+}
+.profile-photo-wrap:hover img { filter: grayscale(0%); transform: scale(1.03); }
+.photo-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+}
+.about-body { font-size: 16px; line-height: 1.85; color: rgba(245,242,237,0.72); }
+.about-body p + p { margin-top: 20px; }
+
+/* ── Capabilities ── */
+.cap-group { margin-bottom: 28px; }
+.cap-group-label {
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.25em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 12px;
+}
+.cap-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.cap-tag {
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+  color: var(--white); border: 1px solid var(--line); padding: 6px 14px;
+  transition: border-color 0.3s, color 0.3s;
+}
+.cap-tag:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Experience ── */
+.exp-header {
+  display: grid; grid-template-columns: 220px 1fr 1fr 40px;
+  gap: 20px; padding-bottom: 16px; border-bottom: 1px solid var(--line);
+}
+.exp-header span { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+.exp-row {
+  display: grid; grid-template-columns: 220px 1fr 1fr 40px;
+  gap: 20px; padding: 28px 0; border-bottom: 1px solid var(--line);
+  transition: background 0.3s; align-items: start;
+}
+.exp-row:hover { background: rgba(200,184,154,0.03); }
+.exp-year { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; padding-top: 3px; }
+.exp-company { font-family: var(--font-sans); font-size: 15px; font-weight: 700; color: var(--white); }
+.exp-role { font-family: var(--font-mono); font-size: 12px; color: var(--accent); letter-spacing: 0.05em; }
+.exp-desc { display: none; grid-column: 2 / 5; padding-top: 16px; }
+.exp-row.open .exp-desc { display: block; }
+.exp-desc p { font-size: 13px; color: var(--muted); line-height: 1.7; margin-bottom: 12px; }
+.exp-bullet-list { list-style: none; }
+.exp-bullet-list li { font-size: 13px; color: rgba(245,242,237,0.5); padding: 4px 0 4px 16px; position: relative; }
+.exp-bullet-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+.exp-toggle {
+  font-size: 20px; color: var(--muted); transition: transform 0.3s, color 0.3s;
+  cursor: pointer; justify-self: end; padding-top: 2px; user-select: none;
+}
+.exp-row.open .exp-toggle { transform: rotate(45deg); color: var(--accent); }
+
+/* ── Projects ── */
+.projects-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); }
+.project-card {
+  background: var(--black); padding: 40px; cursor: pointer;
+  transition: background 0.35s; position: relative; overflow: hidden;
+  min-height: 260px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.project-card:hover { background: rgba(200,184,154,0.05); }
+.project-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 40px; }
+.project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
+.tag {
+  font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
+  text-transform: uppercase; color: var(--accent);
+  border: 1px solid rgba(200,184,154,0.3); padding: 4px 8px;
+}
+.project-name { font-family: var(--font-display); font-size: 24px; color: var(--white); line-height: 1.2; margin-bottom: 8px; }
+.project-client { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+.project-arrow { position: absolute; bottom: 40px; right: 40px; font-size: 20px; color: var(--muted); transition: transform 0.3s, color 0.3s; }
+.project-card:hover .project-arrow { transform: translate(4px, -4px); color: var(--accent); }
+
+/* ── Modal ── */
+.modal-overlay {
+  position: fixed; inset: 0; background: rgba(10,10,10,0.95);
+  z-index: 500; display: flex; align-items: stretch;
+  opacity: 0; pointer-events: none; transition: opacity 0.4s;
+  backdrop-filter: blur(8px);
+}
+.modal-overlay.open { opacity: 1; pointer-events: all; }
+.modal {
+  background: var(--black); border-left: 1px solid var(--line);
+  width: 56%; max-width: 780px; margin-left: auto;
+  overflow-y: auto; padding: 80px 72px;
+  transform: translateX(60px); transition: transform 0.4s ease;
+  position: relative;
+}
+.modal-overlay.open .modal { transform: translateX(0); }
+.modal-close {
+  position: absolute; top: 40px; right: 40px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  text-transform: uppercase; color: var(--muted); cursor: pointer;
+  background: none; border: none; transition: color 0.3s;
+  display: flex; align-items: center; gap: 10px;
+}
+.modal-close:hover { color: var(--white); }
+.modal-close::before { content: '×'; font-size: 20px; font-family: serif; }
+.modal-img-wrap {
+  width: 100%; aspect-ratio: 16/9; overflow: hidden;
+  border: 1px solid var(--line); margin-bottom: 48px; background: #111;
+}
+.modal-img-wrap img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.modal-img-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+}
+.modal-section-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
+.modal-title { font-family: var(--font-display); font-size: 48px; line-height: 1; margin-bottom: 8px; }
+.modal-client { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 48px; letter-spacing: 0.1em; }
+.modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; padding: 32px; border: 1px solid var(--line); }
+.meta-item-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.meta-item-val { font-size: 14px; color: var(--white); }
+.modal-divider { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
+.modal-h3 { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
+.modal-body { font-size: 15px; line-height: 1.85; color: rgba(245,242,237,0.7); margin-bottom: 32px; }
+.modal-results { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
+.result-card { border: 1px solid var(--line); padding: 20px; }
+.result-num { font-family: var(--font-display); font-size: 36px; color: var(--accent); line-height: 1; }
+.result-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.1em; }
+.modal-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+
+/* ── Contact ── */
+#contact { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
+.contact-sub { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 360px; }
+.contact-links { display: flex; flex-direction: column; }
+.contact-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 24px 0; border-bottom: 1px solid var(--line);
+  text-decoration: none; color: var(--white); font-size: 15px;
+  transition: padding-left 0.3s, color 0.3s;
+}
+.contact-link:first-child { border-top: 1px solid var(--line); }
+.contact-link:hover { padding-left: 8px; color: var(--accent); }
+.contact-link-arrow { color: var(--muted); transition: transform 0.3s, color 0.3s; }
+.contact-link:hover .contact-link-arrow { transform: translate(4px, -4px); color: var(--accent); }
+
+/* ── Footer ── */
+footer {
+  padding: 40px 60px; display: flex;
+  justify-content: space-between; align-items: center;
+}
+.footer-copy { font-family: var(--font-mono); font-size: 11px; color: var(--muted); letter-spacing: 0.1em; }
+.footer-right { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+
+/* ── Animations ── */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+.hero-tag { animation: fadeUp 0.8s ease 0.1s both; }
+h1 { animation: fadeUp 0.8s ease 0.2s both; }
+.hero-desc { animation: fadeUp 0.8s ease 0.35s both; }
+.hero-cta { animation: fadeUp 0.8s ease 0.5s both; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  nav { padding: 20px 24px; }
+  #hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
+  .hero-right { padding-left: 0; margin-top: 40px; }
+  section { padding: 70px 24px; }
+  #about, #contact { grid-template-columns: 1fr; gap: 60px; }
+  .exp-header { display: none; }
+  .exp-row { grid-template-columns: 1fr auto; }
+  .exp-desc { grid-column: 1 / 3; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .modal { width: 100%; }
+  footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
+}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Clarissa Wangsa</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-grid-bg"></div>
+  <div style="position:relative;">
+    <div class="hero-tag">Available for new projects</div>
+    <h1>Clarissa<br><em>Wangsa</em></h1>
+    <div class="hero-stats">
+      <div>
+        <div class="stat-num">6+</div>
+        <div class="stat-label">Years Active</div>
+      </div>
+      <div>
+        <div class="stat-num">30+</div>
+        <div class="stat-label">Brands Handled</div>
+      </div>
+      <div>
+        <div class="stat-num">10+</div>
+        <div class="stat-label">Companies</div>
+      </div>
+    </div>
+  </div>
+  <div class="hero-right" style="position:relative;">
+    <p class="hero-desc">Project Manager & Creative Director based in Jakarta — bridging structure, strategy, and visual storytelling for brands that want to leave a mark.</p>
+    <a href="#projects" class="hero-cta">View Projects →</a>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div>
+    <div class="profile-photo-wrap" id="profileWrap">
+      <div class="photo-placeholder" id="profilePlaceholder">Upload photo →</div>
+    </div>
+    <div class="section-tag">About</div>
+    <h2>Structure meets<br><em>creative vision</em></h2>
+    <div class="about-body">
+      <p>Hi, I'm Clarissa — a Jakarta-based project manager who thrives on turning ideas into well-crafted, impactful work. I lead projects end-to-end, ensuring everything runs smoothly, stays on track, and delivers meaningful results for clients.</p>
+      <p>With a background in digital marketing, graphic design, and art direction, I bring both structure and creative vision into every project. I've worked with teams across Jakarta and Singapore, collaborating closely with clients and creatives to shape ideas into strong, purposeful outcomes.</p>
+    </div>
+  </div>
+  <div>
+    <div class="section-tag">Capabilities</div>
+    <br>
+    <div class="cap-group">
+      <div class="cap-group-label">Management</div>
+      <div class="cap-tags">
+        <span class="cap-tag">Project Management</span>
+        <span class="cap-tag">End-to-End Delivery</span>
+        <span class="cap-tag">Client Management</span>
+        <span class="cap-tag">Cross-functional Teams</span>
+        <span class="cap-tag">Briefing & Scoping</span>
+      </div>
+    </div>
+    <div class="cap-group">
+      <div class="cap-group-label">Creative</div>
+      <div class="cap-tags">
+        <span class="cap-tag">Art Direction</span>
+        <span class="cap-tag">Graphic Design</span>
+        <span class="cap-tag">Creative Direction</span>
+        <span class="cap-tag">Visual Identity</span>
+        <span class="cap-tag">Campaign Concepts</span>
+      </div>
+    </div>
+    <div class="cap-group">
+      <div class="cap-group-label">Digital</div>
+      <div class="cap-tags">
+        <span class="cap-tag">Digital Marketing</span>
+        <span class="cap-tag">Social Media</span>
+        <span class="cap-tag">Google & Meta Ads</span>
+        <span class="cap-tag">SEO</span>
+        <span class="cap-tag">Content Strategy</span>
+      </div>
+    </div>
+    <div class="cap-group">
+      <div class="cap-group-label">Tech & Experience</div>
+      <div class="cap-tags">
+        <span class="cap-tag">AR / Instagram Filters</span>
+        <span class="cap-tag">Interactive Experiences</span>
+        <span class="cap-tag">Kinect & Projection</span>
+        <span class="cap-tag">Event Activations</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-tag">Experience</div>
+  <h2>Where I've <em>worked</em></h2>
+  <div class="exp-header">
+    <span>Period</span>
+    <span>Company</span>
+    <span>Role</span>
+    <span></span>
+  </div>
+
+  <div class="exp-row" id="exp0">
+    <div class="exp-year">2023 — Present</div>
+    <div class="exp-company">Unictive Media</div>
+    <div class="exp-role">Project Manager</div>
+    <div class="exp-toggle" onclick="toggleExp('exp0')">+</div>
+    <div class="exp-desc">
+      <p>Led end-to-end delivery of interactive digital projects, creating engaging and immersive experiences for brands across various industries.</p>
+      <ul class="exp-bullet-list">
+        <li>Managed projects: event-based games, AR/Instagram filters, Kinect & projection experiences</li>
+        <li>Coordinated cross-functional teams for on-time, on-brief delivery</li>
+        <li>Translated client needs into clear briefs, concepts, and actionable project plans</li>
+        <li>Clients: Paddle Pop, Coca-Cola, Skippy, McDonald's, Bank BCA, Bali Safari, Implora, Daihatsu, IBM, and more</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp1">
+    <div class="exp-year">2022 — Present</div>
+    <div class="exp-company">Unictive Media</div>
+    <div class="exp-role">Digital Marketing Specialist</div>
+    <div class="exp-toggle" onclick="toggleExp('exp1')">+</div>
+    <div class="exp-desc">
+      <p>Managed the company's digital presence — social media, paid advertising, and SEO.</p>
+      <ul class="exp-bullet-list">
+        <li>End-to-end social media: content planning, ideation, and execution</li>
+        <li>Managed and optimized Google Ads and Meta Ads campaigns</li>
+        <li>Supported SEO initiatives to improve website visibility and organic reach</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp2">
+    <div class="exp-year">2020 — 2024</div>
+    <div class="exp-company">iQuartz, Singapore</div>
+    <div class="exp-role">Digital Marketing Specialist</div>
+    <div class="exp-toggle" onclick="toggleExp('exp2')">+</div>
+    <div class="exp-desc">
+      <p>Managed end-to-end social media strategies to enhance brand presence and engagement.</p>
+      <ul class="exp-bullet-list">
+        <li>Content strategy: optimization, hashtag research, monthly reporting</li>
+        <li>Created visual content and marketing copy</li>
+        <li>Achieved 150+ organic follower growth within 3 months</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp3">
+    <div class="exp-year">2022</div>
+    <div class="exp-company">Sinema Malam Minggu</div>
+    <div class="exp-role">Digital Marketing Associate</div>
+    <div class="exp-toggle" onclick="toggleExp('exp3')">+</div>
+    <div class="exp-desc">
+      <p>Built SEO strategy and created content for website and social media.</p>
+      <ul class="exp-bullet-list">
+        <li>Keyword research and SEO strategy development</li>
+        <li>Website content optimization for search performance</li>
+        <li>Articles and social content for Sinemalaminggu.com</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp4">
+    <div class="exp-year">2020 — 2022</div>
+    <div class="exp-company">Vivore</div>
+    <div class="exp-role">Graphic Designer</div>
+    <div class="exp-toggle" onclick="toggleExp('exp4')">+</div>
+    <div class="exp-desc">
+      <p>Created visual assets for branding, campaigns, and social media.</p>
+      <ul class="exp-bullet-list">
+        <li>Creative concepts and visual designs for social media and branding</li>
+        <li>Assets for both online and offline marketing channels</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp5">
+    <div class="exp-year">2020 — 2021</div>
+    <div class="exp-company">PT Cahaya Bangunan Baru</div>
+    <div class="exp-role">Digital Team Lead</div>
+    <div class="exp-toggle" onclick="toggleExp('exp5')">+</div>
+    <div class="exp-desc">
+      <p>Led digital team and drove measurable engagement growth.</p>
+      <ul class="exp-bullet-list">
+        <li>Developed and managed social media strategies, optimization, reporting</li>
+        <li>Managed Facebook and Instagram paid advertising</li>
+        <li>+35% engagement growth in 2 weeks through tactical campaigns</li>
+        <li>120+ organic followers gained; led team of digital marketers, designers, e-commerce staff</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp6">
+    <div class="exp-year">2020 — 2021</div>
+    <div class="exp-company">Wedding by Renjana</div>
+    <div class="exp-role">Graphic Designer</div>
+    <div class="exp-toggle" onclick="toggleExp('exp6')">+</div>
+    <div class="exp-desc">
+      <p>Created concepts and visual assets for client campaigns across online and offline channels.</p>
+      <ul class="exp-bullet-list">
+        <li>Clients: Traveloka Mams, Classhe, Bekelin, Moro Bakeshop, Mimisan, Rokum</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp7">
+    <div class="exp-year">2019</div>
+    <div class="exp-company">Leo Burnett Indonesia</div>
+    <div class="exp-role">Art Director Intern</div>
+    <div class="exp-toggle" onclick="toggleExp('exp7')">+</div>
+    <div class="exp-desc">
+      <p>Developed campaign ideas and executed visual assets for integrated campaigns.</p>
+      <ul class="exp-bullet-list">
+        <li>Dedicated client: Citilink</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp8">
+    <div class="exp-year">2019</div>
+    <div class="exp-company">McCann Worldgroup Indonesia</div>
+    <div class="exp-role">Art Director Intern</div>
+    <div class="exp-toggle" onclick="toggleExp('exp8')">+</div>
+    <div class="exp-desc">
+      <p>Created campaign concepts and visual executions across multiple channels.</p>
+      <ul class="exp-bullet-list">
+        <li>Clients: Mentos, Big Babol, Sasa, Coca-Cola</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp9">
+    <div class="exp-year">2019</div>
+    <div class="exp-company">GREYnJ Thailand</div>
+    <div class="exp-role">Art Director Intern</div>
+    <div class="exp-toggle" onclick="toggleExp('exp9')">+</div>
+    <div class="exp-desc">
+      <p>Developed creative concepts and key visuals for campaigns.</p>
+      <ul class="exp-bullet-list">
+        <li>Clients: Tag Thai, Central World, KBank, CP Foods</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="exp-row" id="exp10">
+    <div class="exp-year">2019</div>
+    <div class="exp-company">Binus University</div>
+    <div class="exp-role">Graphic Designer Intern</div>
+    <div class="exp-toggle" onclick="toggleExp('exp10')">+</div>
+    <div class="exp-desc">
+      <p>Designed books and materials for the School of Design.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-tag">Selected Work</div>
+  <h2>Projects that <em>made impact</em></h2>
+  <div class="projects-grid">
+    <div class="project-card" onclick="openModal('proj1')">
+      <div>
+        <div class="project-num">01</div>
+        <div class="project-tags"><span class="tag">Interactive</span><span class="tag">AR</span></div>
+        <div class="project-name">AR Instagram Filter Campaign</div>
+        <div class="project-client">Coca-Cola × Unictive Media</div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+    <div class="project-card" onclick="openModal('proj2')">
+      <div>
+        <div class="project-num">02</div>
+        <div class="project-tags"><span class="tag">Event</span><span class="tag">Gamification</span></div>
+        <div class="project-name">Interactive Event Game Experience</div>
+        <div class="project-client">McDonald's × Unictive Media</div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+    <div class="project-card" onclick="openModal('proj3')">
+      <div>
+        <div class="project-num">03</div>
+        <div class="project-tags"><span class="tag">Projection</span><span class="tag">Immersive</span></div>
+        <div class="project-name">Kinect Projection Activation</div>
+        <div class="project-client">Bali Safari × Unictive Media</div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+    <div class="project-card" onclick="openModal('proj4')">
+      <div>
+        <div class="project-num">04</div>
+        <div class="project-tags"><span class="tag">Social Media</span><span class="tag">Growth</span></div>
+        <div class="project-name">Organic Growth Strategy</div>
+        <div class="project-client">iQuartz — Singapore</div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+    <div class="project-card" onclick="openModal('proj5')">
+      <div>
+        <div class="project-num">05</div>
+        <div class="project-tags"><span class="tag">Paid Ads</span><span class="tag">Lead Gen</span></div>
+        <div class="project-name">Engagement Campaign Surge</div>
+        <div class="project-client">PT Cahaya Bangunan Baru</div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+    <div class="project-card" onclick="openModal('proj6')">
+      <div>
+        <div class="project-num">06</div>
+        <div class="project-tags"><span class="tag">Branding</span><span class="tag">Campaign</span></div>
+        <div class="project-name">Integrated Campaign Execution</div>
+        <div class="project-client">Bank BCA × Unictive Media</div>
+      </div>
+      <span class="project-arrow">↗</span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div>
+    <div class="section-tag">Contact</div>
+    <h2>Let's build something <em>meaningful</em></h2>
+    <p class="contact-sub">Open to project management roles, creative collaborations, and consulting engagements. Based in Jakarta, available remotely.</p>
+  </div>
+  <div class="contact-links">
+    <a href="mailto:clarissa@email.com" class="contact-link">
+      <span>clarissa@email.com</span><span class="contact-link-arrow">↗</span>
+    </a>
+    <a href="https://linkedin.com/in/clarissa" class="contact-link" target="_blank">
+      <span>LinkedIn</span><span class="contact-link-arrow">↗</span>
+    </a>
+    <a href="https://instagram.com/clarissa" class="contact-link" target="_blank">
+      <span>Instagram</span><span class="contact-link-arrow">↗</span>
+    </a>
+    <a href="#" class="contact-link">
+      <span>Download CV</span><span class="contact-link-arrow">↗</span>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2025 Clarissa Wangsa — Jakarta, Indonesia</div>
+  <div class="footer-right">Designed with intention</div>
+</footer>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeOnBg(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">Close</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+// ── Custom cursor ──
+var cur = document.getElementById('cursor');
+var ring = document.getElementById('cursor-ring');
+var mx = window.innerWidth / 2;
+var my = window.innerHeight / 2;
+var rx = mx, ry = my;
+
+document.addEventListener('mousemove', function(e) {
+  mx = e.clientX;
+  my = e.clientY;
+  cur.style.transform = 'translate(' + (mx - 4) + 'px,' + (my - 4) + 'px)';
+});
+
+(function animRing() {
+  rx += (mx - rx - 18) * 0.12;
+  ry += (my - ry - 18) * 0.12;
+  ring.style.transform = 'translate(' + rx + 'px,' + ry + 'px)';
+  requestAnimationFrame(animRing);
+})();
+
+var hoverEls = document.querySelectorAll('a, button, .project-card, .exp-toggle, .cap-tag');
+hoverEls.forEach(function(el) {
+  el.addEventListener('mouseenter', function() { ring.classList.add('big'); });
+  el.addEventListener('mouseleave', function() { ring.classList.remove('big'); });
+});
+
+// ── Experience toggle ──
+function toggleExp(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// ── Project data ──
+var projects = {
+  proj1: {
+    num: '01', title: 'AR Instagram Filter Campaign', client: 'Coca-Cola × Unictive Media',
+    year: '2023', type: 'AR Filter / Social Campaign', role: 'Project Manager',
+    tags: ['AR', 'Instagram', 'Interactive', 'Social Media'], imgSrc: '',
+    brief: 'Coca-Cola wanted a shareable Instagram filter experience to drive user-generated content around a seasonal campaign. The brief required a visually engaging, brand-consistent AR filter that users would naturally want to share.',
+    approach: 'Led end-to-end project delivery from creative briefing through to deployment. Coordinated between the AR development team, Coca-Cola\'s brand team, and social media managers to align on visual direction, interaction flow, and campaign timing. Managed revisions and QA across multiple devices.',
+    results: [{ num: '2.4M+', label: 'Filter uses in 4 weeks' }, { num: '38K+', label: 'UGC posts generated' }, { num: '100%', label: 'On-time delivery' }, { num: '0', label: 'Delays across all milestones' }]
+  },
+  proj2: {
+    num: '02', title: 'Interactive Event Game Experience', client: "McDonald's × Unictive Media",
+    year: '2024', type: 'Event Activation / Gamification', role: 'Project Manager',
+    tags: ['Event', 'Game', 'Interactive', 'Activation'], imgSrc: '',
+    brief: 'McDonald\'s needed an interactive game activation for a brand event — something that would engage visitors of all ages, create memorable moments, and reinforce brand identity in a physical event space.',
+    approach: 'Managed the full project lifecycle: concept development, vendor coordination, technical production, and on-site deployment. Worked closely with the creative and dev team to balance brand requirements with entertainment value. Coordinated logistics for the physical installation and staffing.',
+    results: [{ num: '5,000+', label: 'Event attendees engaged' }, { num: '2 days', label: 'Event run, zero downtime' }, { num: '95%', label: 'Positive feedback score' }, { num: '1', label: 'National press mention' }]
+  },
+  proj3: {
+    num: '03', title: 'Kinect Projection Activation', client: 'Bali Safari × Unictive Media',
+    year: '2023', type: 'Immersive Experience / Projection Mapping', role: 'Project Manager',
+    tags: ['Kinect', 'Projection', 'Immersive', 'Motion Sensing'], imgSrc: '',
+    brief: 'Bali Safari wanted a tech-driven immersive experience — an installation where guests interact with projected content using body movement, creating an unforgettable, shareable moment.',
+    approach: 'Scoped the project from brief to installation, coordinating the technical team for Kinect motion sensing and projection mapping setup. Managed site visits, technical requirements, timeline, and budget. Delivered full documentation and post-event reporting.',
+    results: [{ num: '8,000+', label: 'Visitor interactions' }, { num: '4 weeks', label: 'Brief to live installation' }, { num: '0', label: 'Cost overruns' }, { num: '+2 weeks', label: 'Extended run by client' }]
+  },
+  proj4: {
+    num: '04', title: 'Organic Growth Strategy', client: 'iQuartz — Singapore',
+    year: '2020–2024', type: 'Social Media / Content Strategy', role: 'Digital Marketing Specialist',
+    tags: ['Social Media', 'Content Strategy', 'SEO', 'Growth'], imgSrc: '',
+    brief: 'iQuartz needed a consistent, strategy-driven social media presence to build brand awareness in the Singapore market with high-quality visual content and organic growth focus.',
+    approach: 'Developed a full content strategy including visual identity guidelines for social, hashtag research, content calendar, and monthly performance reporting. Created and scheduled all social content end-to-end across platforms.',
+    results: [{ num: '150+', label: 'Organic followers in 3 months' }, { num: '4 years', label: 'Ongoing collaboration' }, { num: '3×', label: 'Avg engagement rate increase' }, { num: '100%', label: 'Content calendar adherence' }]
+  },
+  proj5: {
+    num: '05', title: 'Engagement Campaign Surge', client: 'PT Cahaya Bangunan Baru',
+    year: '2020–2021', type: 'Paid Social / Team Leadership', role: 'Digital Team Lead',
+    tags: ['Facebook Ads', 'Instagram', 'Team Lead', 'Paid Social'], imgSrc: '',
+    brief: 'Rapid growth target for a building materials company — needed both paid and organic results in a very short window, plus leadership of a small cross-functional digital team.',
+    approach: 'Led a team of digital marketers, graphic designers, and e-commerce staff. Built and executed a multi-channel campaign strategy combining paid Facebook/Instagram ads with organic social tactics. Set clear KPIs and reporting structures.',
+    results: [{ num: '+35%', label: 'Engagement in 2 weeks' }, { num: '120+', label: 'Organic followers gained' }, { num: '4-person', label: 'Team led end-to-end' }, { num: '2 weeks', label: 'To hit all targets' }]
+  },
+  proj6: {
+    num: '06', title: 'Integrated Campaign Execution', client: 'Bank BCA × Unictive Media',
+    year: '2023', type: 'Digital Campaign / Interactive Content', role: 'Project Manager',
+    tags: ['Banking', 'Campaign', 'Interactive', 'Project Management'], imgSrc: '',
+    brief: 'Bank BCA required a coordinated interactive digital campaign — combining digital touchpoints with experiential elements to deepen brand engagement.',
+    approach: 'Served as the central coordination point between the bank\'s marketing team and internal production team. Managed briefing sessions, scope definition, milestone tracking, and client communications throughout.',
+    results: [{ num: 'On time', label: 'Full delivery, no delays' }, { num: '100%', label: 'Brief satisfaction' }, { num: 'Repeat', label: 'Client — ongoing work' }, { num: '3', label: 'Campaign phases managed' }]
+  }
+};
+
+function openModal(id) {
+  var p = projects[id];
+  var imgHTML = p.imgSrc
+    ? '<div class="modal-img-wrap"><img src="' + p.imgSrc + '" alt="' + p.title + '"></div>'
+    : '<div class="modal-img-wrap"><div class="modal-img-placeholder">Project image — upload to add</div></div>';
+  var resultsHTML = p.results.map(function(r) {
+    return '<div class="result-card"><div class="result-num">' + r.num + '</div><div class="result-label">' + r.label + '</div></div>';
+  }).join('');
+  var tagHTML = p.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
+
+  document.getElementById('modalContent').innerHTML =
+    '<div class="modal-section-tag">' + p.num + ' — ' + p.type + '</div>' +
+    '<div class="modal-title">' + p.title + '</div>' +
+    '<div class="modal-client">' + p.client + '</div>' +
+    imgHTML +
+    '<div class="modal-meta">' +
+      '<div><div class="meta-item-label">Year</div><div class="meta-item-val">' + p.year + '</div></div>' +
+      '<div><div class="meta-item-label">My Role</div><div class="meta-item-val">' + p.role + '</div></div>' +
+      '<div><div class="meta-item-label">Project Type</div><div class="meta-item-val">' + p.type + '</div></div>' +
+      '<div><div class="meta-item-label">Client</div><div class="meta-item-val">' + p.client.split('×')[0].trim() + '</div></div>' +
+    '</div>' +
+    '<div class="modal-h3">Brief</div>' +
+    '<div class="modal-body">' + p.brief + '</div>' +
+    '<hr class="modal-divider">' +
+    '<div class="modal-h3">My Approach</div>' +
+    '<div class="modal-body">' + p.approach + '</div>' +
+    '<hr class="modal-divider">' +
+    '<div class="modal-h3">Results</div>' +
+    '<div class="modal-results">' + resultsHTML + '</div>' +
+    '<div class="modal-tags" style="margin-top:40px;">' + tagHTML + '</div>';
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeOnBg(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModal();
+}
+
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
