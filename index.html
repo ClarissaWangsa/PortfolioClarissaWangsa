@@ -161,10 +161,13 @@ section { padding: 100px 60px; border-bottom: 1px solid var(--line); }
 }
 .section-tag::before { content: '//'; color: var(--muted); }
 h2 { font-family: var(--font-display); font-size: clamp(36px, 5vw, 60px); line-height: 1.05; margin-bottom: 60px; }
+#about h2 { font-size: clamp(32px, 4vw, 52px); margin-bottom: 28px; }
 h2 em { font-style: italic; color: var(--accent); }
 
 /* ── About ── */
-#about { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: start; }
+#about { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
+.about-left { display: flex; flex-direction: column; }
+.about-right { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 0; }
 .profile-photo-wrap {
   width: 100%; aspect-ratio: 3/4; overflow: hidden;
   border: 1px solid var(--line); position: relative;
@@ -180,7 +183,7 @@ h2 em { font-style: italic; color: var(--accent); }
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
   color: var(--muted); text-transform: uppercase;
 }
-.about-body { font-size: 16px; line-height: 1.85; color: rgba(245,242,237,0.72); }
+.about-body { font-size: 17px; line-height: 1.9; color: rgba(245,242,237,0.78); }
 .about-body p + p { margin-top: 20px; }
 
 /* ── Capabilities ── */
@@ -254,7 +257,7 @@ h2 em { font-style: italic; color: var(--accent); }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 .modal {
   background: var(--black); border-left: 1px solid var(--line);
-  width: 56%; max-width: 780px; margin-left: auto;
+  width: 70%; max-width: 980px; margin-left: auto;
   overflow-y: auto; padding: 80px 72px;
   transform: translateX(60px); transition: transform 0.4s ease;
   position: relative;
@@ -294,6 +297,66 @@ h2 em { font-style: italic; color: var(--accent); }
 .result-label { font-family: var(--font-mono); font-size: 11px; color: var(--muted); margin-top: 6px; letter-spacing: 0.1em; }
 .modal-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
 
+
+/* ── Slideshow in modal ── */
+.modal-slideshow {
+  position: relative; width: 100%; aspect-ratio: 16/9;
+  overflow: hidden; border: 1px solid var(--line); margin-bottom: 48px;
+  background: #111;
+}
+.slide { position: absolute; inset: 0; opacity: 0; transition: opacity 0.5s ease; }
+.slide.active { opacity: 1; }
+.slide img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.slide-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase; flex-direction: column; gap: 12px;
+}
+.slide-placeholder span { font-size: 28px; opacity: 0.3; }
+.slide-nav {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  display: flex; gap: 8px; z-index: 10;
+}
+.slide-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(200,184,154,0.3); border: none; cursor: pointer;
+  transition: background 0.3s, transform 0.3s; padding: 0;
+}
+.slide-dot.active { background: var(--accent); transform: scale(1.4); }
+.slide-btn {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(10,10,10,0.7); border: 1px solid var(--line);
+  color: var(--accent); font-size: 18px; width: 44px; height: 44px;
+  cursor: pointer; z-index: 10; transition: background 0.3s;
+  display: flex; align-items: center; justify-content: center;
+}
+.slide-btn:hover { background: rgba(200,184,154,0.15); }
+.slide-btn.prev { left: 16px; }
+.slide-btn.next { right: 16px; }
+.slide-counter {
+  position: absolute; top: 16px; right: 16px;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--accent); background: rgba(10,10,10,0.7); padding: 6px 12px;
+  border: 1px solid var(--line); z-index: 10;
+}
+
+/* ── See more button ── */
+.see-more-wrap { text-align: center; margin-top: 60px; }
+.see-more-btn {
+  display: inline-flex; align-items: center; gap: 16px;
+  font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--white); text-decoration: none;
+  border: 1px solid var(--line); padding: 18px 36px;
+  transition: all 0.3s; position: relative; overflow: hidden;
+}
+.see-more-btn::before {
+  content: ''; position: absolute; inset: 0;
+  background: var(--accent); transform: translateX(-100%);
+  transition: transform 0.4s ease; z-index: -1;
+}
+.see-more-btn:hover::before { transform: translateX(0); }
+.see-more-btn:hover { color: var(--black); border-color: var(--accent); }
+
 /* ── Contact ── */
 #contact { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; align-items: center; }
 .contact-sub { font-size: 15px; color: var(--muted); line-height: 1.8; max-width: 360px; }
@@ -325,8 +388,11 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
 .hero-cta { animation: fadeUp 0.8s ease 0.5s both; }
 
 /* ── Responsive ── */
+/* ── Tablet (≤900px) ── */
 @media (max-width: 900px) {
   nav { padding: 20px 24px; }
+  .nav-links { gap: 24px; }
+  .nav-links a { font-size: 10px; }
   #hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
   .hero-right { padding-left: 0; margin-top: 40px; }
   section { padding: 70px 24px; }
@@ -334,9 +400,96 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
   .exp-header { display: none; }
   .exp-row { grid-template-columns: 1fr auto; }
   .exp-desc { grid-column: 1 / 3; }
-  .projects-grid { grid-template-columns: 1fr; }
-  .modal { width: 100%; }
+  .projects-grid { grid-template-columns: 1fr 1fr; }
+  .modal { width: 90%; padding: 60px 40px; }
   footer { padding: 32px 24px; flex-direction: column; gap: 12px; }
+}
+
+/* ── Mobile (≤600px) — 9:16 phones ── */
+@media (max-width: 600px) {
+  /* Nav */
+  nav { padding: 18px 20px; }
+  .nav-links { gap: 16px; }
+  .nav-links a { font-size: 9px; letter-spacing: 0.12em; }
+  .nav-logo { font-size: 10px; }
+
+  /* Hero */
+  #hero { padding: 100px 20px 52px; gap: 0; }
+  h1 { font-size: clamp(44px, 13vw, 64px); margin-bottom: 28px; }
+  .hero-tag { font-size: 10px; margin-bottom: 20px; }
+  .hero-desc { font-size: 14px; max-width: 100%; margin-bottom: 32px; }
+  .hero-right { margin-top: 32px; }
+  .hero-stats { gap: 28px; margin-top: 40px; padding-top: 28px; flex-wrap: wrap; }
+  .stat-num { font-size: 32px; }
+  .stat-label { font-size: 9px; }
+  .hero-cta { font-size: 10px; padding: 14px 22px; }
+
+  /* Sections */
+  section { padding: 56px 20px; }
+  h2 { font-size: clamp(28px, 9vw, 44px); margin-bottom: 40px; }
+  #about h2 { font-size: clamp(26px, 8vw, 36px); margin-bottom: 20px; }
+  .section-tag { font-size: 9px; }
+
+  /* About */
+  #about { grid-template-columns: 1fr; gap: 44px; }
+  .profile-photo-wrap { max-width: 100%; aspect-ratio: 4/3; margin-bottom: 24px; }
+  .about-body { font-size: 15px; line-height: 1.75; }
+  .cap-tag { font-size: 10px; padding: 5px 12px; }
+  .cap-group { margin-bottom: 20px; }
+
+  /* Experience */
+  .exp-header { display: none; }
+  .exp-row { 
+    grid-template-columns: 1fr auto; 
+    gap: 12px; padding: 20px 0;
+  }
+  .exp-year { font-size: 10px; grid-column: 1 / 3; margin-bottom: 2px; }
+  .exp-company { font-size: 14px; }
+  .exp-role { font-size: 11px; }
+  .exp-desc { grid-column: 1 / 3; }
+  .exp-desc p { font-size: 12px; }
+  .exp-bullet-list li { font-size: 12px; }
+
+  /* Projects */
+  .projects-grid { grid-template-columns: 1fr; }
+  .project-card { padding: 28px 24px; min-height: 200px; }
+  .project-name { font-size: 20px; }
+  .project-arrow { bottom: 24px; right: 24px; }
+  .see-more-wrap { margin-top: 40px; }
+  .see-more-btn { font-size: 10px; padding: 14px 28px; }
+
+  /* Modal */
+  .modal {
+    width: 100%;
+    padding: 56px 20px 40px;
+    margin-left: 0;
+    border-left: none;
+    border-top: 1px solid var(--line);
+    align-self: flex-end;
+    max-height: 92vh;
+  }
+  .modal-overlay { align-items: flex-end; }
+  .modal-close { top: 20px; right: 20px; font-size: 9px; }
+  .modal-title { font-size: 32px; }
+  .modal-client { font-size: 11px; margin-bottom: 28px; }
+  .modal-meta { grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; margin-bottom: 32px; }
+  .meta-item-val { font-size: 13px; }
+  .modal-slideshow { aspect-ratio: 4/3; margin-bottom: 32px; }
+  .slide-btn { width: 36px; height: 36px; font-size: 16px; }
+  .modal-results { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .result-num { font-size: 26px; }
+  .result-card { padding: 14px; }
+
+  /* Contact */
+  #contact { grid-template-columns: 1fr; gap: 40px; }
+  .contact-link { padding: 18px 0; font-size: 14px; }
+
+  /* Footer */
+  footer { padding: 28px 20px; flex-direction: column; gap: 10px; text-align: center; }
+
+  /* Cursor — hide on touch */
+  #cursor, #cursor-ring { display: none; }
+  body { cursor: auto; }
 }
 </style>
 </head>
@@ -385,7 +538,7 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
 
 <!-- ABOUT -->
 <section id="about">
-  <div>
+  <div class="about-left">
     <div class="profile-photo-wrap" id="profileWrap">
       <!-- <div class="photo-placeholder" id="profilePlaceholder">Upload photo → -->
       <img src="fotoclar.jpeg" alt="">
@@ -398,7 +551,7 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
       <p>With a background in digital marketing, graphic design, and art direction, I bring both structure and creative vision into every project. I've worked with teams across Jakarta and Singapore, collaborating closely with clients and creatives to shape ideas into strong, purposeful outcomes.</p>
     </div>
   </div>
-  <div>
+  <div class="about-right">
     <div class="section-tag">Capabilities</div>
     <br>
     <div class="cap-group">
@@ -668,6 +821,9 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
       <span class="project-arrow">↗</span>
     </div>
   </div>
+  <div class="see-more-wrap">
+    <a href="projects.html" class="see-more-btn">See more projects →</a>
+  </div>
 </section>
 
 <!-- CONTACT -->
@@ -678,8 +834,8 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
     <p class="contact-sub">Open to project management roles, creative collaborations, and consulting engagements. Based in Jakarta, available remotely.</p>
   </div>
   <div class="contact-links">
-    <a href="mailto:cwangsa08@gmail.com" class="contact-link">
-      <span>cwangsa08@gmail.com</span><span class="contact-link-arrow">↗</span>
+    <a href="/cdn-cgi/l/email-protection#5a392d3b343d293b6a621a3d373b333674393537" class="contact-link">
+      <span><span class="__cf_email__" data-cfemail="99faeef8f7feeaf8a9a1d9fef4f8f0f5b7faf6f4">[email&#160;protected]</span></span><span class="contact-link-arrow">↗</span>
     </a>
     <a href="https://linkedin.com/in/clarissa-wangsa" class="contact-link" target="_blank">
       <span>LinkedIn</span><span class="contact-link-arrow">↗</span>
@@ -706,7 +862,7 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── Custom cursor ──
 var cur = document.getElementById('cursor');
 var ring = document.getElementById('cursor-ring');
@@ -742,16 +898,23 @@ function toggleExp(id) {
 var projects = {
   proj1: {
     num: '01', title: 'Interactive Games and Photo Booth @Daihatsu GIIAS', client: 'Daihatsu',
-    year: '2023', type: 'AR Filter / Social Campaign', role: 'Project Manager',
-    tags: ['AR', 'Instagram', 'Interactive', 'Social Media'], imgSrc: '',
-    brief: 'Coca-Cola wanted a shareable Instagram filter experience to drive user-generated content around a seasonal campaign. The brief required a visually engaging, brand-consistent AR filter that users would naturally want to share.',
-    approach: 'Led end-to-end project delivery from creative briefing through to deployment. Coordinated between the AR development team, Coca-Cola\'s brand team, and social media managers to align on visual direction, interaction flow, and campaign timing. Managed revisions and QA across multiple devices.',
-    results: [{ num: '2.4M+', label: 'Filter uses in 4 weeks' }, { num: '38K+', label: 'UGC posts generated' }, { num: '100%', label: 'On-time delivery' }, { num: '0', label: 'Delays across all milestones' }]
+    year: '2025', type: 'Interactive Games & Experiences', role: 'Project Manager',
+    tags: ['Interactive Experience', 'Event Activation', 'Game Development', 'Embedded System'], imgSrc: '', images: ['daihatsu1.jpg', 'daihatsu2.jpg', 'daihatsu3.jpg','daihatsu4.jpg','daihatsu5.jpg','daihatsu6.jpg','daihatsu7.jpg','daihatsu8.jpg'],
+    brief: 'Led the delivery of a series of interactive game experiences for GIIAS, aimed at attracting visitors and increasing engagement within the event space. The project required creating fun, accessible, and high-impact activations that appeal to a wide audience while supporting the overall event objectives.',
+    approach: 'Managed end-to-end project execution, from initial planning through on-site deployment. Coordinated cross-functional teams including designers, developers, and vendors to ensure all installations were delivered on time and aligned with the event requirements. Oversaw the development of multiple interactive experiences, including an AI-powered photo booth, a claw machine, and a motion-based racing game. Ensured each activation was intuitive, engaging, and ready for high-traffic usage during the event.',
+    // results: [{ num: '5,000+', label: 'Event attendees engaged' }, { num: '2 days', label: 'Event run, zero downtime' }, { num: '95%', label: 'Positive feedback score' }, { num: '1', label: 'National press mention' }]
+    // results: <ul> 
+    //   <li> Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay </li>
+    //   <li> Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation </li>
+    //   <li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li>
+    //   <li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li>
+    //   </ul>
+    results:'Successfully delivered a series of interactive installations that combined custom software, embedded systems, and physical gameplay within a live event environment. The project encompassed a range of experiences—from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, a claw machine, and a giant console-inspired installation—fully built and integrated by the team. All systems were optimized for high-traffic usage, ensuring stable performance and seamless on-ground execution. The result was a highly engaging and interactive event space that attracted a wide range of visitors and encouraged active participation.'
   },
   proj2: {
     num: '02', title: 'Interactive Event Game Experience', client: "McDonald's × Unictive Media",
     year: '2024', type: 'Event Activation / Gamification', role: 'Project Manager',
-    tags: ['Event', 'Game', 'Interactive', 'Activation'], imgSrc: '',
+    tags: ['Event', 'Game', 'Interactive', 'Activation'], imgSrc: '', images: [],
     brief: 'McDonald\'s needed an interactive game activation for a brand event — something that would engage visitors of all ages, create memorable moments, and reinforce brand identity in a physical event space.',
     approach: 'Managed the full project lifecycle: concept development, vendor coordination, technical production, and on-site deployment. Worked closely with the creative and dev team to balance brand requirements with entertainment value. Coordinated logistics for the physical installation and staffing.',
     results: [{ num: '5,000+', label: 'Event attendees engaged' }, { num: '2 days', label: 'Event run, zero downtime' }, { num: '95%', label: 'Positive feedback score' }, { num: '1', label: 'National press mention' }]
@@ -759,7 +922,7 @@ var projects = {
   proj3: {
     num: '03', title: 'Kinect Projection Activation', client: 'Bali Safari × Unictive Media',
     year: '2023', type: 'Immersive Experience / Projection Mapping', role: 'Project Manager',
-    tags: ['Kinect', 'Projection', 'Immersive', 'Motion Sensing'], imgSrc: '',
+    tags: ['Kinect', 'Projection', 'Immersive', 'Motion Sensing'], imgSrc: '', images: [],
     brief: 'Bali Safari wanted a tech-driven immersive experience — an installation where guests interact with projected content using body movement, creating an unforgettable, shareable moment.',
     approach: 'Scoped the project from brief to installation, coordinating the technical team for Kinect motion sensing and projection mapping setup. Managed site visits, technical requirements, timeline, and budget. Delivered full documentation and post-event reporting.',
     results: [{ num: '8,000+', label: 'Visitor interactions' }, { num: '4 weeks', label: 'Brief to live installation' }, { num: '0', label: 'Cost overruns' }, { num: '+2 weeks', label: 'Extended run by client' }]
@@ -767,7 +930,7 @@ var projects = {
   proj4: {
     num: '04', title: 'Organic Growth Strategy', client: 'iQuartz — Singapore',
     year: '2020–2024', type: 'Social Media / Content Strategy', role: 'Digital Marketing Specialist',
-    tags: ['Social Media', 'Content Strategy', 'SEO', 'Growth'], imgSrc: '',
+    tags: ['Social Media', 'Content Strategy', 'SEO', 'Growth'], imgSrc: '', images: [],
     brief: 'iQuartz needed a consistent, strategy-driven social media presence to build brand awareness in the Singapore market with high-quality visual content and organic growth focus.',
     approach: 'Developed a full content strategy including visual identity guidelines for social, hashtag research, content calendar, and monthly performance reporting. Created and scheduled all social content end-to-end across platforms.',
     results: [{ num: '150+', label: 'Organic followers in 3 months' }, { num: '4 years', label: 'Ongoing collaboration' }, { num: '3×', label: 'Avg engagement rate increase' }, { num: '100%', label: 'Content calendar adherence' }]
@@ -775,7 +938,7 @@ var projects = {
   proj5: {
     num: '05', title: 'Engagement Campaign Surge', client: 'PT Cahaya Bangunan Baru',
     year: '2020–2021', type: 'Paid Social / Team Leadership', role: 'Digital Team Lead',
-    tags: ['Facebook Ads', 'Instagram', 'Team Lead', 'Paid Social'], imgSrc: '',
+    tags: ['Facebook Ads', 'Instagram', 'Team Lead', 'Paid Social'], imgSrc: '', images: [],
     brief: 'Rapid growth target for a building materials company — needed both paid and organic results in a very short window, plus leadership of a small cross-functional digital team.',
     approach: 'Led a team of digital marketers, graphic designers, and e-commerce staff. Built and executed a multi-channel campaign strategy combining paid Facebook/Instagram ads with organic social tactics. Set clear KPIs and reporting structures.',
     results: [{ num: '+35%', label: 'Engagement in 2 weeks' }, { num: '120+', label: 'Organic followers gained' }, { num: '4-person', label: 'Team led end-to-end' }, { num: '2 weeks', label: 'To hit all targets' }]
@@ -783,7 +946,7 @@ var projects = {
   proj6: {
     num: '06', title: 'Integrated Campaign Execution', client: 'Bank BCA × Unictive Media',
     year: '2023', type: 'Digital Campaign / Interactive Content', role: 'Project Manager',
-    tags: ['Banking', 'Campaign', 'Interactive', 'Project Management'], imgSrc: '',
+    tags: ['Banking', 'Campaign', 'Interactive', 'Project Management'], imgSrc: '', images: [],
     brief: 'Bank BCA required a coordinated interactive digital campaign — combining digital touchpoints with experiential elements to deepen brand engagement.',
     approach: 'Served as the central coordination point between the bank\'s marketing team and internal production team. Managed briefing sessions, scope definition, milestone tracking, and client communications throughout.',
     results: [{ num: 'On time', label: 'Full delivery, no delays' }, { num: '100%', label: 'Brief satisfaction' }, { num: 'Repeat', label: 'Client — ongoing work' }, { num: '3', label: 'Campaign phases managed' }]
@@ -792,12 +955,12 @@ var projects = {
 
 function openModal(id) {
   var p = projects[id];
-  var imgHTML = p.imgSrc
-    ? '<div class="modal-img-wrap"><img src="' + p.imgSrc + '" alt="' + p.title + '"></div>'
-    : '<div class="modal-img-wrap"><div class="modal-img-placeholder">Project image — upload to add</div></div>';
-  var resultsHTML = p.results.map(function(r) {
-    return '<div class="result-card"><div class="result-num">' + r.num + '</div><div class="result-label">' + r.label + '</div></div>';
-  }).join('');
+  // Build slideshow from images array or single imgSrc
+  var images = p.images || (p.imgSrc ? [p.imgSrc] : []);
+  var imgHTML = buildSlideshow(images, p.title);
+  // var resultsHTML = p.results.map(function(r) {
+  //   return '<div class="result-card"><div class="result-num">' + r.num + '</div><div class="result-label">' + r.label + '</div></div>';
+  // }).join('');
   var tagHTML = p.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
 
   document.getElementById('modalContent').innerHTML =
@@ -818,23 +981,61 @@ function openModal(id) {
     '<div class="modal-body">' + p.approach + '</div>' +
     '<hr class="modal-divider">' +
     '<div class="modal-h3">Results</div>' +
-    '<div class="modal-results">' + resultsHTML + '</div>' +
+    // '<div class="modal-results">'</div>' +
+    '<div class="modal-body">' + '<ul> <li> Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay </li><li> Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation </li><li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li><li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li></ul>' + '</div>' +
     '<div class="modal-tags" style="margin-top:40px;">' + tagHTML + '</div>';
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 
+function buildSlideshow(images, title) {
+  if (!images || images.length === 0) {
+    return '<div class="modal-slideshow"><div class="slide active"><div class="slide-placeholder"><span>◻</span>Project images — add via images array</div></div></div>';
+  }
+  if (images.length === 1) {
+    return '<div class="modal-slideshow"><div class="slide active"><img src="' + images[0] + '" alt="' + title + '"></div></div>';
+  }
+  var slides = images.map(function(src, i) {
+    return '<div class="slide' + (i === 0 ? ' active' : '') + '"><img src="' + src + '" alt="' + title + ' ' + (i+1) + '"></div>';
+  }).join('');
+  var dots = images.map(function(_, i) {
+    return '<button class="slide-dot' + (i === 0 ? ' active' : '') + '" onclick="goSlide(' + i + ')"></button>';
+  }).join('');
+  return '<div class="modal-slideshow" id="slideshow">' +
+    slides +
+    '<button class="slide-btn prev" onclick="prevSlide()">‹</button>' +
+    '<button class="slide-btn next" onclick="nextSlide()">›</button>' +
+    '<div class="slide-nav">' + dots + '</div>' +
+    '<div class="slide-counter" id="slideCounter">1 / ' + images.length + '</div>' +
+    '</div>';
+}
+
+var currentSlide = 0;
+function goSlide(n) {
+  var slides = document.querySelectorAll('#slideshow .slide');
+  var dots = document.querySelectorAll('#slideshow .slide-dot');
+  var counter = document.getElementById('slideCounter');
+  if (!slides.length) return;
+  slides[currentSlide].classList.remove('active');
+  dots[currentSlide].classList.remove('active');
+  currentSlide = (n + slides.length) % slides.length;
+  slides[currentSlide].classList.add('active');
+  dots[currentSlide].classList.add('active');
+  if (counter) counter.textContent = (currentSlide + 1) + ' / ' + slides.length;
+}
+function nextSlide() { goSlide(currentSlide + 1); }
+function prevSlide() { goSlide(currentSlide - 1); }
+
 function closeModal() {
   document.getElementById('modalOverlay').classList.remove('open');
   document.body.style.overflow = '';
+  currentSlide = 0;
 }
 
 function closeOnBg(e) {
   if (e.target === document.getElementById('modalOverlay')) closeModal();
 }
-
-document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
 </script>
 </body>
 </html>
