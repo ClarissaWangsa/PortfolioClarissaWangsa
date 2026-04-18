@@ -900,7 +900,7 @@ var projects = {
     num: '01', title: 'Interactive Games and Photo Booth @Daihatsu GIIAS', client: 'Daihatsu',
     year: '2025', type: 'Interactive Games & Experiences', role: 'Project Manager',
     tags: ['Interactive Experience', 'Event Activation', 'Game Development', 'Embedded System'], imgSrc: '', images: ['daihatsu1.jpg', 'daihatsu2.jpg', 'daihatsu3.jpg','daihatsu4.jpg','daihatsu5.jpg','daihatsu6.jpg','daihatsu7.jpg','daihatsu8.jpg'],
-    brief: 'Led the delivery of a series of interactive game experiences for GIIAS, aimed at attracting visitors and increasing engagement within the event space. The project required creating fun, accessible, and high-impact activations that appeal to a wide audience while supporting the overall event objectives.',
+    brief: 'Led the delivery of a retro game–inspired experience for GIIAS, reimagining classic arcade and console gameplay into large-scale, interactive installations. The project transformed nostalgic games into both digital and physical formats—inviting visitors to actively participate through tactile and movement-based interactions. From a giant Game Boy–inspired console to a racing obstacle game controlled by stepping on physical floor pads, each activation turned familiar gameplay into an immersive, full-body experience that attracts crowds and engages visitors of all ages.',
     approach: 'Managed end-to-end project execution, from initial planning through on-site deployment. Coordinated cross-functional teams including designers, developers, and vendors to ensure all installations were delivered on time and aligned with the event requirements. Oversaw the development of multiple interactive experiences, including an AI-powered photo booth, a claw machine, and a motion-based racing game. Ensured each activation was intuitive, engaging, and ready for high-traffic usage during the event.',
     // results: [{ num: '5,000+', label: 'Event attendees engaged' }, { num: '2 days', label: 'Event run, zero downtime' }, { num: '95%', label: 'Positive feedback score' }, { num: '1', label: 'National press mention' }]
     // results: <ul> 
@@ -909,11 +909,17 @@ var projects = {
     //   <li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li>
     //   <li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li>
     //   </ul>
-    results:'Successfully delivered a series of interactive installations that combined custom software, embedded systems, and physical gameplay within a live event environment. The project encompassed a range of experiences—from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, a claw machine, and a giant console-inspired installation—fully built and integrated by the team. All systems were optimized for high-traffic usage, ensuring stable performance and seamless on-ground execution. The result was a highly engaging and interactive event space that attracted a wide range of visitors and encouraged active participation.'
+    results: [
+  'Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay',
+  'Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation',
+  'Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions',
+  'Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences'
+]
+    // results:'Successfully delivered a series of interactive installations that combined custom software, embedded systems, and physical gameplay within a live event environment.he project encompassed a range of experiences—from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, a claw machine, and a giant console-inspired installation—fully built and integrated by the team. All systems were optimized for high-traffic usage, ensuring stable performance and seamless on-ground execution. The result was a highly engaging and interactive event space that attracted a wide range of visitors and encouraged active participation.'
   },
   proj2: {
     num: '02', title: 'Interactive Event Game Experience', client: "McDonald's × Unictive Media",
-    year: '2024', type: 'Event Activation / Gamification', role: 'Project Manager',
+    year: '2025', type: 'Event Activation / Gamification', role: 'Project Manager',
     tags: ['Event', 'Game', 'Interactive', 'Activation'], imgSrc: '', images: [],
     brief: 'McDonald\'s needed an interactive game activation for a brand event — something that would engage visitors of all ages, create memorable moments, and reinforce brand identity in a physical event space.',
     approach: 'Managed the full project lifecycle: concept development, vendor coordination, technical production, and on-site deployment. Worked closely with the creative and dev team to balance brand requirements with entertainment value. Coordinated logistics for the physical installation and staffing.',
@@ -953,6 +959,7 @@ var projects = {
   }
 };
 
+
 function openModal(id) {
   var p = projects[id];
   // Build slideshow from images array or single imgSrc
@@ -962,6 +969,12 @@ function openModal(id) {
   //   return '<div class="result-card"><div class="result-num">' + r.num + '</div><div class="result-label">' + r.label + '</div></div>';
   // }).join('');
   var tagHTML = p.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
+
+  var resultsHTML = Array.isArray(p.results)
+  ? '<ul>' + p.results.map(function(r) {
+      return '<li>' + r + '</li>';
+    }).join('') + '</ul>'
+  : '<div class="modal-body">' + p.results + '</div>';
 
   document.getElementById('modalContent').innerHTML =
     '<div class="modal-section-tag">' + p.num + ' — ' + p.type + '</div>' +
@@ -981,8 +994,11 @@ function openModal(id) {
     '<div class="modal-body">' + p.approach + '</div>' +
     '<hr class="modal-divider">' +
     '<div class="modal-h3">Results</div>' +
+    '<div class="modal-body">' + resultsHTML + '</div>' +
     // '<div class="modal-results">'</div>' +
-    '<div class="modal-body">' + '<ul> <li> Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay </li><li> Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation </li><li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li><li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li></ul>' + '</div>' +
+    // '<div class="modal-body">' + '<ul> <li> Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay </li><li> Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation </li><li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li><li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li></ul>' + '</div>' +
+    // '<div class="modal-body">' + p.results + '</div>' +
+    
     '<div class="modal-tags" style="margin-top:40px;">' + tagHTML + '</div>';
 
   document.getElementById('modalOverlay').classList.add('open');
