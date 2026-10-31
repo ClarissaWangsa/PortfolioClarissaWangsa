@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>Clarissa Wangsa — Project Manager & Creative Director</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -165,13 +166,21 @@ h2 { font-family: var(--font-display); font-size: clamp(36px, 5vw, 60px); line-h
 h2 em { font-style: italic; color: var(--accent); }
 
 /* ── About ── */
-#about { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start; }
-.about-left { display: flex; flex-direction: column; }
-.about-right { display: flex; flex-direction: column; justify-content: flex-start; padding-top: 0; }
+#about {
+  min-height: 100svh;
+  display: grid; grid-template-columns: 1.15fr 0.85fr;
+  gap: 64px; align-items: center;
+}
+.about-left {
+  display: grid; grid-template-columns: minmax(180px, 0.78fr) minmax(0, 1.22fr);
+  gap: 32px; align-items: center;
+}
+.about-copy { min-width: 0; }
+.about-right { display: flex; flex-direction: column; justify-content: center; padding-top: 0; }
 .profile-photo-wrap {
   width: 100%; aspect-ratio: 3/4; overflow: hidden;
-  border: 1px solid var(--line); position: relative;
-  background: #111; max-width: 320px; margin-bottom: 32px;
+  border: 1px solid var(--line); position: relative; background: #111;
+  max-width: none; margin-bottom: 0;
 }
 .profile-photo-wrap img {
   width: 100%; height: 100%; object-fit: cover; display: block;
@@ -183,7 +192,7 @@ h2 em { font-style: italic; color: var(--accent); }
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
   color: var(--muted); text-transform: uppercase;
 }
-.about-body { font-size: 17px; line-height: 1.9; color: rgba(245,242,237,0.78); }
+.about-body { font-size: 15px; line-height: 1.8; color: rgba(245,242,237,0.78); }
 .about-body p + p { margin-top: 20px; }
 
 /* ── Capabilities ── */
@@ -232,10 +241,24 @@ h2 em { font-style: italic; color: var(--accent); }
 .project-card {
   background: var(--black); padding: 40px; cursor: pointer;
   transition: background 0.35s; position: relative; overflow: hidden;
-  min-height: 260px; display: flex; flex-direction: column; justify-content: space-between;
+  min-height: 390px; display: flex; flex-direction: column; justify-content: space-between;
 }
 .project-card:hover { background: rgba(200,184,154,0.05); }
-.project-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 40px; }
+.project-num { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; color: var(--muted); margin-bottom: 20px; }
+.project-thumb {
+  width: 100%; aspect-ratio: 16/9; overflow: hidden;
+  border: 1px solid var(--line); background: #111; margin-bottom: 24px;
+}
+.project-thumb img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  filter: grayscale(20%); transition: filter 0.4s, transform 0.5s;
+}
+.project-thumb-placeholder {
+  width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em;
+  color: var(--muted); text-transform: uppercase;
+}
+.project-card:hover .project-thumb img { filter: grayscale(0%); transform: scale(1.04); }
 .project-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 .tag {
   font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.15em;
@@ -250,19 +273,19 @@ h2 em { font-style: italic; color: var(--accent); }
 /* ── Modal ── */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(10,10,10,0.95);
-  z-index: 500; display: flex; align-items: stretch;
+  z-index: 500; display: flex; align-items: center; justify-content: center;
   opacity: 0; pointer-events: none; transition: opacity 0.4s;
   backdrop-filter: blur(8px);
 }
 .modal-overlay.open { opacity: 1; pointer-events: all; }
 .modal {
-  background: var(--black); border-left: 1px solid var(--line);
-  width: 70%; max-width: 980px; margin-left: auto;
+  background: var(--black); border: 1px solid var(--line);
+  width: 96vw; max-width: none; height: 94vh; margin: 0;
   overflow-y: auto; padding: 80px 72px;
-  transform: translateX(60px); transition: transform 0.4s ease;
+  transform: translateY(30px); transition: transform 0.4s ease;
   position: relative;
 }
-.modal-overlay.open .modal { transform: translateX(0); }
+.modal-overlay.open .modal { transform: translateY(0); }
 .modal-close {
   position: absolute; top: 40px; right: 40px;
   font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.2em;
@@ -284,13 +307,55 @@ h2 em { font-style: italic; color: var(--accent); }
 }
 .modal-section-tag { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--accent); margin-bottom: 16px; }
 .modal-title { font-family: var(--font-display); font-size: 48px; line-height: 1; margin-bottom: 8px; }
-.modal-client { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 48px; letter-spacing: 0.1em; }
-.modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 48px; padding: 32px; border: 1px solid var(--line); }
+.modal-client { font-family: var(--font-mono); font-size: 13px; color: var(--muted); margin-bottom: 32px; letter-spacing: 0.1em; }
+.modal-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; padding: 24px 32px; border: 1px solid var(--line); }
 .meta-item-label { font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
 .meta-item-val { font-size: 14px; color: var(--white); }
+.meta-tags { display: flex; flex-wrap: wrap; gap: 8px; }
 .modal-divider { border: none; border-top: 1px solid var(--line); margin: 40px 0; }
 .modal-h3 { font-family: var(--font-sans); font-size: 11px; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent); margin-bottom: 20px; }
-.modal-body { font-size: 15px; line-height: 1.85; color: rgba(245,242,237,0.7); margin-bottom: 32px; }
+.modal-body { font-size: 14px; line-height: 1.75; color: rgba(245,242,237,0.7); margin-bottom: 32px; }
+.modal-body p { margin: 0 0 16px; }
+.modal-body p:last-child { margin-bottom: 0; }
+.project-content-section {
+  display: grid; grid-template-columns: minmax(160px, 0.34fr) minmax(0, 1fr);
+  gap: 48px; padding: 28px 0; margin: 0; border-top: 1px solid var(--line);
+}
+.project-content-section .modal-h3 { margin: 2px 0 0; }
+.project-content-section .modal-body { max-width: 780px; margin: 0; }
+.project-content-list { list-style: none; padding: 0; margin: 0; }
+.project-content-list li { padding: 0 0 10px 20px; position: relative; }
+.project-content-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+.project-source {
+  display: grid; grid-template-columns: minmax(160px, 0.34fr) minmax(0, 1fr);
+  gap: 48px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 24px 0; margin-top: 0;
+}
+.project-source .meta-item-label { margin: 2px 0 0; }
+.project-source a { color: var(--white); font-family: var(--font-mono); font-size: 12px; word-break: break-all; }
+.project-source a:hover { color: var(--accent); }
+.modal-result-list { list-style: none; padding: 0; margin: 0; }
+.modal-result-list li { padding: 10px 0 10px 18px; border-bottom: 1px solid var(--line); position: relative; }
+.modal-result-list li::before { content: '—'; position: absolute; left: 0; color: var(--accent); }
+.project-media-grid {
+  --video-width: clamp(220px, 18vw, 315px);
+  display: grid; grid-template-columns: minmax(0, 1fr) var(--video-width);
+  grid-template-rows: minmax(0, 1fr);
+  gap: 48px; align-items: stretch; min-height: 0;
+  height: calc(var(--video-width) * 1.7778); margin-bottom: 32px;
+}
+.project-media-grid.no-video { display: block; height: auto; }
+.project-gallery, .project-gallery .modal-slideshow { height: 100%; min-height: 0; min-width: 0; }
+.project-gallery .modal-slideshow { aspect-ratio: auto; margin-bottom: 0; }
+.project-media-grid.no-video .project-gallery .modal-slideshow { aspect-ratio: 16/9; height: auto; }
+.project-video-wrap { width: 100%; height: 100%; min-height: 0; min-width: 0; overflow: hidden; }
+.project-video {
+  width: 100%; aspect-ratio: 9/16; display: block; min-height: 0;
+  height: 100%; border: 1px solid var(--line); background: #111; object-fit: cover;
+}
+.project-video-wrap iframe { border: 1px solid var(--line); background: #111; }
+.project-copy-grid { display: block; }
+.project-copy-grid .modal-body { margin-bottom: 0; }
 .modal-results { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 32px; }
 .result-card { border: 1px solid var(--line); padding: 20px; }
 .result-num { font-family: var(--font-display); font-size: 36px; color: var(--accent); line-height: 1; }
@@ -367,10 +432,15 @@ h2 em { font-style: italic; color: var(--accent); }
   text-decoration: none; color: var(--white); font-size: 15px;
   transition: padding-left 0.3s, color 0.3s;
 }
-.contact-link:first-child { border-top: 1px solid var(--line); }
 .contact-link:hover { padding-left: 8px; color: var(--accent); }
 .contact-link-arrow { color: var(--muted); transition: transform 0.3s, color 0.3s; }
 .contact-link:hover .contact-link-arrow { transform: translate(4px, -4px); color: var(--accent); }
+.contact-group + .contact-group { margin-top: 32px; }
+.contact-label {
+  padding-bottom: 14px; border-bottom: 1px solid var(--line);
+  font-family: var(--font-mono); font-size: 10px;
+  letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent);
+}
 
 /* ── Footer ── */
 footer {
@@ -396,7 +466,8 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
   #hero { grid-template-columns: 1fr; padding: 120px 24px 60px; }
   .hero-right { padding-left: 0; margin-top: 40px; }
   section { padding: 70px 24px; }
-  #about, #contact { grid-template-columns: 1fr; gap: 60px; }
+  #about { min-height: auto; grid-template-columns: 1fr; gap: 60px; }
+  #contact { grid-template-columns: 1fr; gap: 60px; }
   .exp-header { display: none; }
   .exp-row { grid-template-columns: 1fr auto; }
   .exp-desc { grid-column: 1 / 3; }
@@ -432,6 +503,7 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
 
   /* About */
   #about { grid-template-columns: 1fr; gap: 44px; }
+  .about-left { grid-template-columns: 1fr; gap: 0; }
   .profile-photo-wrap { max-width: 100%; aspect-ratio: 4/3; margin-bottom: 24px; }
   .about-body { font-size: 15px; line-height: 1.75; }
   .cap-tag { font-size: 10px; padding: 5px 12px; }
@@ -452,7 +524,8 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
 
   /* Projects */
   .projects-grid { grid-template-columns: 1fr; }
-  .project-card { padding: 28px 24px; min-height: 200px; }
+  .project-card { padding: 28px 24px; min-height: 0; }
+  .project-thumb { margin-bottom: 20px; }
   .project-name { font-size: 20px; }
   .project-arrow { bottom: 24px; right: 24px; }
   .see-more-wrap { margin-top: 40px; }
@@ -460,20 +533,27 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
 
   /* Modal */
   .modal {
-    width: 100%;
+    width: calc(100% - 24px);
+    height: calc(100vh - 24px);
     padding: 56px 20px 40px;
-    margin-left: 0;
-    border-left: none;
-    border-top: 1px solid var(--line);
-    align-self: flex-end;
-    max-height: 92vh;
+    margin: 0;
+    border: 1px solid var(--line);
+    max-height: none;
   }
-  .modal-overlay { align-items: flex-end; }
+  .modal-overlay { align-items: center; }
   .modal-close { top: 20px; right: 20px; font-size: 9px; }
   .modal-title { font-size: 32px; }
   .modal-client { font-size: 11px; margin-bottom: 28px; }
-  .modal-meta { grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; margin-bottom: 32px; }
+  .modal-meta { grid-template-columns: 1fr 1fr; gap: 16px; padding: 20px; margin-bottom: 24px; }
   .meta-item-val { font-size: 13px; }
+  .project-media-grid { display: block; height: auto; }
+  .project-gallery .modal-slideshow,
+  .project-media-grid.no-video .project-gallery .modal-slideshow { aspect-ratio: 16/9; height: auto; }
+  .project-video-wrap { max-width: 280px; height: auto; margin-top: 32px; }
+  .project-video { height: auto; }
+  .project-copy-grid { display: block; }
+  .project-content-section,
+  .project-source { grid-template-columns: 1fr; gap: 12px; padding: 22px 0; }
   .modal-slideshow { aspect-ratio: 4/3; margin-bottom: 32px; }
   .slide-btn { width: 36px; height: 36px; font-size: 16px; }
   .modal-results { grid-template-columns: 1fr 1fr; gap: 10px; }
@@ -541,19 +621,20 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
   <div class="about-left">
     <div class="profile-photo-wrap" id="profileWrap">
       <!-- <div class="photo-placeholder" id="profilePlaceholder">Upload photo → -->
-      <img src="fotoclar.jpeg" alt="">
+      <img src="foto-cv.png" alt="Clarissa Wangsa">
       <!-- </div> -->
     </div>
-    <div class="section-tag">About</div>
-    <h2>Structure meets<br><em>creative vision</em></h2>
-    <div class="about-body">
-      <p>Hi, I'm Clarissa — a Jakarta-based project manager who thrives on turning ideas into well-crafted, impactful work. I lead projects end-to-end, ensuring everything runs smoothly, stays on track, and delivers meaningful results for clients.</p>
-      <p>With a background in digital marketing, graphic design, and art direction, I bring both structure and creative vision into every project. I've worked with teams across Jakarta and Singapore, collaborating closely with clients and creatives to shape ideas into strong, purposeful outcomes.</p>
+    <div class="about-copy">
+      <div class="section-tag">About</div>
+      <h2>Structure meets<br><em>creative vision</em></h2>
+      <div class="about-body">
+        <p>Hi, I'm Clarissa — a Jakarta-based project manager who thrives on turning ideas into well-crafted, impactful work. I lead projects end-to-end, ensuring everything runs smoothly, stays on track, and delivers meaningful results for clients.</p>
+        <p>With a background in digital marketing, graphic design, and art direction, I bring both structure and creative vision into every project. I've worked with teams across Jakarta and Singapore, collaborating closely with clients and creatives to shape ideas into strong, purposeful outcomes.</p>
+      </div>
     </div>
   </div>
   <div class="about-right">
     <div class="section-tag">Capabilities</div>
-    <br>
     <div class="cap-group">
       <div class="cap-group-label">Management</div>
       <div class="cap-tags">
@@ -769,8 +850,9 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
     <div class="project-card" onclick="openModal('proj1')">
       <div>
         <div class="project-num">01</div>
-        <div class="project-tags"><span class="tag">Interactive</span><span class="tag">Gamification</span><span class="tag">Photo Booth</span></div>
-        <div class="project-name">Interactive Games & Experience for Daihatsu GIIAS</div>
+        <div class="project-thumb"><img src="Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/Thumbnaildaihatsu2025.jpg" alt="Interactive Games and Photo Booth for Daihatsu GIIAS"></div>
+        <div class="project-tags"><span class="tag">Gamification</span><span class="tag">Interactive</span><span class="tag">Embedded</span></div>
+        <div class="project-name">Interactive Games and Photo Booth @Daihatsu GIIAS</div>
         <div class="project-client">Daihatsu</div>
       </div>
       <span class="project-arrow">↗</span>
@@ -778,51 +860,26 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
     <div class="project-card" onclick="openModal('proj2')">
       <div>
         <div class="project-num">02</div>
-        <div class="project-tags"><span class="tag">Event</span><span class="tag">Gamification</span><span class="tag">Embedded</span></div>
-        <div class="project-name">House of Goodness - Giant Human Wheel</div>
-        <div class="project-client">Haluu x Fitbar</div>
+        <div class="project-thumb"><img src="Project_Media/House of Goodness Fitbar/thumbnailfitbar.jpg" alt="House of Goodness Giant Human Wheel for Fitbar"></div>
+        <div class="project-tags"><span class="tag">Gamification</span><span class="tag">Interactive</span><span class="tag">Embedded</span></div>
+        <div class="project-name">House of Goodness — Giant Human Wheel</div>
+        <div class="project-client">Fitbar</div>
       </div>
       <span class="project-arrow">↗</span>
     </div>
     <div class="project-card" onclick="openModal('proj3')">
       <div>
         <div class="project-num">03</div>
-        <div class="project-tags"><span class="tag">Interactive</span><span class="tag">Embedded</span></div>
-        <div class="project-name">Dunia Tanpa Syarat</div>
-        <div class="project-client">Haluu x Bintang </div>
-      </div>
-      <span class="project-arrow">↗</span>
-    </div>
-    <div class="project-card" onclick="openModal('proj4')">
-      <div>
-        <div class="project-num">04</div>
+        <div class="project-thumb"><img src="Project_Media/Petualangan Paddle Pop/thumbnailpaddlepop.jpg" alt="Petualangan Paddle Pop on Roblox"></div>
         <div class="project-tags"><span class="tag">Gamification</span><span class="tag">Roblox</span></div>
-        <div class="project-name">Petualangan Paddle Pop</div>
+        <div class="project-name">Petualangan Paddle Pop on Roblox</div>
         <div class="project-client">Paddle Pop</div>
-      </div>
-      <span class="project-arrow">↗</span>
-    </div>
-    <div class="project-card" onclick="openModal('proj5')">
-      <div>
-        <div class="project-num">05</div>
-        <div class="project-tags"><span class="tag">3D E-directory</span><span class="tag">Interactive</span><span class="tag">Visual</span></div>
-        <div class="project-name"> Freeport 3D E-directory</div>
-        <div class="project-client">PT Freeport Indonesia</div>
-      </div>
-      <span class="project-arrow">↗</span>
-    </div>
-    <div class="project-card" onclick="openModal('proj6')">
-      <div>
-        <div class="project-num">06</div>
-        <div class="project-tags"><span class="tag">Immersive</span><span class="tag">Interactive Particle</span><span class="tag">Visual</span></div>
-        <div class="project-name">BCA Solitaire Dynasty of Tomorrow</div>
-        <div class="project-client">BCA</div>
       </div>
       <span class="project-arrow">↗</span>
     </div>
   </div>
   <div class="see-more-wrap">
-    <a href="projects.html" class="see-more-btn">See more projects →</a>
+    <a href="projectpage.html" class="see-more-btn">See more projects →</a>
   </div>
 </section>
 
@@ -834,18 +891,24 @@ h1 { animation: fadeUp 0.8s ease 0.2s both; }
     <p class="contact-sub">Open to project management roles, creative collaborations, and consulting engagements. Based in Jakarta, available remotely.</p>
   </div>
   <div class="contact-links">
-    <a href="/cdn-cgi/l/email-protection#5a392d3b343d293b6a621a3d373b333674393537" class="contact-link">
-      <span><span class="__cf_email__" data-cfemail="99faeef8f7feeaf8a9a1d9fef4f8f0f5b7faf6f4">[email&#160;protected]</span></span><span class="contact-link-arrow">↗</span>
-    </a>
-    <a href="https://linkedin.com/in/clarissa-wangsa" class="contact-link" target="_blank">
-      <span>LinkedIn</span><span class="contact-link-arrow">↗</span>
-    </a>
-    <a href="https://instagram.com/clarissawangsa" class="contact-link" target="_blank">
-      <span>Instagram</span><span class="contact-link-arrow">↗</span>
-    </a>
-    <a href="#" class="contact-link">
-      <span>Download CV</span><span class="contact-link-arrow">↗</span>
-    </a>
+    <div class="contact-group">
+      <div class="contact-label">Information</div>
+      <a href="https://clarissawangsa.github.io/cvclarissa2026/" class="contact-link" target="_blank" rel="noopener noreferrer">
+        <span>See full CV</span><span class="contact-link-arrow">↗</span>
+      </a>
+      <a href="mailto:cwangsa08@gmail.com" class="contact-link">
+        <span>cwangsa08@gmail.com</span><span class="contact-link-arrow">↗</span>
+      </a>
+    </div>
+    <div class="contact-group">
+      <div class="contact-label">Social</div>
+      <a href="https://linkedin.com/in/clarissa-wangsa" class="contact-link" target="_blank" rel="noopener noreferrer">
+        <span>LinkedIn</span><span class="contact-link-arrow">↗</span>
+      </a>
+      <a href="https://instagram.com/clarissawangsa" class="contact-link" target="_blank" rel="noopener noreferrer">
+        <span>Instagram</span><span class="contact-link-arrow">↗</span>
+      </a>
+    </div>
   </div>
 </section>
 
@@ -898,64 +961,88 @@ function toggleExp(id) {
 var projects = {
   proj1: {
     num: '01', title: 'Interactive Games and Photo Booth @Daihatsu GIIAS', client: 'Daihatsu',
-    year: '2025', type: 'Interactive Games & Experiences', role: 'Project Manager',
-    tags: ['Interactive Experience', 'Event Activation', 'Game Development', 'Embedded System'], imgSrc: '', images: ['daihatsu1.jpg', 'daihatsu2.jpg', 'daihatsu3.jpg','daihatsu4.jpg','daihatsu5.jpg','daihatsu6.jpg','daihatsu7.jpg','daihatsu8.jpg'],
-    brief: 'Led the delivery of a retro game–inspired experience for GIIAS, reimagining classic arcade and console gameplay into large-scale, interactive installations. The project transformed nostalgic games into both digital and physical formats—inviting visitors to actively participate through tactile and movement-based interactions. From a giant Game Boy–inspired console to a racing obstacle game controlled by stepping on physical floor pads, each activation turned familiar gameplay into an immersive, full-body experience that attracts crowds and engages visitors of all ages.',
-    approach: 'Managed end-to-end project execution, from initial planning through on-site deployment. Coordinated cross-functional teams including designers, developers, and vendors to ensure all installations were delivered on time and aligned with the event requirements. Oversaw the development of multiple interactive experiences, including an AI-powered photo booth, a claw machine, and a motion-based racing game. Ensured each activation was intuitive, engaging, and ready for high-traffic usage during the event.',
-    // results: [{ num: '5,000+', label: 'Event attendees engaged' }, { num: '2 days', label: 'Event run, zero downtime' }, { num: '95%', label: 'Positive feedback score' }, { num: '1', label: 'National press mention' }]
-    // results: <ul> 
-    //   <li> Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay </li>
-    //   <li> Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation </li>
-    //   <li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li>
-    //   <li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li>
-    //   </ul>
-    results: [
-  'Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay',
-  'Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation',
-  'Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions',
-  'Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences'
-]
-    // results:'Successfully delivered a series of interactive installations that combined custom software, embedded systems, and physical gameplay within a live event environment.he project encompassed a range of experiences—from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, a claw machine, and a giant console-inspired installation—fully built and integrated by the team. All systems were optimized for high-traffic usage, ensuring stable performance and seamless on-ground execution. The result was a highly engaging and interactive event space that attracted a wide range of visitors and encouraged active participation.'
+    year: '2025', role: 'Project Manager',
+    tags: ['Gamification', 'Interactive', 'Embedded'],
+    images: [
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/1.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/2.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/3.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/4.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/5.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/6.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/7.jpg',
+      'Project_Media/Interactive Games and Photo Booth @Daihatsu GIIAS/8.jpg'
+    ],
+    overview: `An interactive event experience for Daihatsu at GIIAS 2025, reimagining retro arcade and console games as large-scale digital and physical installations. The experience invited visitors to take part through tactile and movement-based gameplay, including a giant Game Boy-inspired console and a floor-pad-controlled racing game.`,
+    roleDetails: `Managed end-to-end project execution, from initial planning through on-site deployment. Coordinated designers, developers, and vendors, and oversaw the delivery of multiple interactive installations, including an AI-powered photo booth, a claw machine, a motion-based racing game, and a giant console-inspired experience.`,
+    challenge: `The project involved multiple interactive installations with different modes of play and technical requirements. Delivering a cohesive visitor experience required coordination across custom software, embedded systems, physical hardware, and event production, while preparing the activations for high-traffic, on-site use.`,
+    execution: `• Managed project planning and aligned requirements with the event needs.
+• Coordinated designers, developers, and vendors across the different installations.
+• Oversaw the development of interactive experiences involving custom software, embedded systems, and physical gameplay.
+• Coordinated testing to help ensure the systems were stable, responsive, and intuitive to use.
+• Managed on-site deployment and readiness for event operations.`,
+    deliverables: `• AI-powered photo booth
+• Claw machine activation
+• Motion-based racing game controlled by physical floor pads
+• Giant Game Boy-inspired interactive installation
+• A series of digital and physical interactive games for the Daihatsu GIIAS experience`,
+    outcome: `Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay. The experiences were prepared for high-traffic event conditions and designed to encourage visitor participation across a range of ages.`,
+    source: 'https://unictive.com/titan/detail/XPOB'
   },
   proj2: {
-    num: '02', title: 'Interactive Event Game Experience', client: "McDonald's × Unictive Media",
-    year: '2025', type: 'Event Activation / Gamification', role: 'Project Manager',
-    tags: ['Event', 'Game', 'Interactive', 'Activation'], imgSrc: '', images: [],
-    brief: 'McDonald\'s needed an interactive game activation for a brand event — something that would engage visitors of all ages, create memorable moments, and reinforce brand identity in a physical event space.',
-    approach: 'Managed the full project lifecycle: concept development, vendor coordination, technical production, and on-site deployment. Worked closely with the creative and dev team to balance brand requirements with entertainment value. Coordinated logistics for the physical installation and staffing.',
-    results: [{ num: '5,000+', label: 'Event attendees engaged' }, { num: '2 days', label: 'Event run, zero downtime' }, { num: '95%', label: 'Positive feedback score' }, { num: '1', label: 'National press mention' }]
+    num: '02', title: 'House of Goodness — Giant Human Wheel', client: 'Fitbar',
+    year: '2025', role: 'Project Manager',
+    tags: ['Gamification', 'Interactive', 'Embedded'],
+    images: [
+      'Project_Media/House of Goodness Fitbar/1.jpg',
+      'Project_Media/House of Goodness Fitbar/2.jpg',
+      'Project_Media/House of Goodness Fitbar/3.jpg',
+      'Project_Media/House of Goodness Fitbar/4.jpg',
+      'Project_Media/House of Goodness Fitbar/5.jpg',
+      'Project_Media/House of Goodness Fitbar/6.jpg',
+      'Project_Media/House of Goodness Fitbar/7.jpg'
+    ],
+    videoSrc: 'https://youtube.com/shorts/WBEU8KRVFvg?feature=share',
+    videoType: 'embed',
+    overview: `An immersive brand activation for Fitbar’s House of Goodness, featuring a giant human-sized wheel game. The experience was designed to create an energetic, participatory moment for event visitors and encourage brand engagement through a playful, larger-than-life interaction.`,
+    roleDetails: `Managed the project from concept coordination through hardware preparation, on-site setup, and event-day operations. Worked closely with the creative and technical teams to bring the experience to life in line with the intended concept and brand direction.`,
+    challenge: `The activation translated a simple game concept into a large-scale physical experience. This required close coordination between the creative concept, hardware requirements, technical preparation, and on-site operations to ensure the installation could be used smoothly during the event.`,
+    execution: `• Coordinated the creative concept and aligned the team on the intended visitor experience.
+• Managed hardware coordination and preparation for the giant wheel installation.
+• Worked with the creative and technical teams to align production requirements.
+• Coordinated on-site setup and readiness before the event opened.
+• Supported event-day operations to help keep the activation running smoothly.`,
+    deliverables: `• Giant human-sized wheel game installation
+• Physical interactive brand activation for House of Goodness
+• On-site setup and event-day operational support`,
+    outcome: `• 5000+ event attendees engaged
+• 2 days with zero downtime
+• Repeat client collaboration`,
+    source: 'https://unictive.com/titan/detail/PAQJ'
   },
   proj3: {
-    num: '03', title: 'Kinect Projection Activation', client: 'Bali Safari × Unictive Media',
-    year: '2023', type: 'Immersive Experience / Projection Mapping', role: 'Project Manager',
-    tags: ['Kinect', 'Projection', 'Immersive', 'Motion Sensing'], imgSrc: '', images: [],
-    brief: 'Bali Safari wanted a tech-driven immersive experience — an installation where guests interact with projected content using body movement, creating an unforgettable, shareable moment.',
-    approach: 'Scoped the project from brief to installation, coordinating the technical team for Kinect motion sensing and projection mapping setup. Managed site visits, technical requirements, timeline, and budget. Delivered full documentation and post-event reporting.',
-    results: [{ num: '8,000+', label: 'Visitor interactions' }, { num: '4 weeks', label: 'Brief to live installation' }, { num: '0', label: 'Cost overruns' }, { num: '+2 weeks', label: 'Extended run by client' }]
-  },
-  proj4: {
-    num: '04', title: 'Organic Growth Strategy', client: 'iQuartz — Singapore',
-    year: '2020–2024', type: 'Social Media / Content Strategy', role: 'Digital Marketing Specialist',
-    tags: ['Social Media', 'Content Strategy', 'SEO', 'Growth'], imgSrc: '', images: [],
-    brief: 'iQuartz needed a consistent, strategy-driven social media presence to build brand awareness in the Singapore market with high-quality visual content and organic growth focus.',
-    approach: 'Developed a full content strategy including visual identity guidelines for social, hashtag research, content calendar, and monthly performance reporting. Created and scheduled all social content end-to-end across platforms.',
-    results: [{ num: '150+', label: 'Organic followers in 3 months' }, { num: '4 years', label: 'Ongoing collaboration' }, { num: '3×', label: 'Avg engagement rate increase' }, { num: '100%', label: 'Content calendar adherence' }]
-  },
-  proj5: {
-    num: '05', title: 'Engagement Campaign Surge', client: 'PT Cahaya Bangunan Baru',
-    year: '2020–2021', type: 'Paid Social / Team Leadership', role: 'Digital Team Lead',
-    tags: ['Facebook Ads', 'Instagram', 'Team Lead', 'Paid Social'], imgSrc: '', images: [],
-    brief: 'Rapid growth target for a building materials company — needed both paid and organic results in a very short window, plus leadership of a small cross-functional digital team.',
-    approach: 'Led a team of digital marketers, graphic designers, and e-commerce staff. Built and executed a multi-channel campaign strategy combining paid Facebook/Instagram ads with organic social tactics. Set clear KPIs and reporting structures.',
-    results: [{ num: '+35%', label: 'Engagement in 2 weeks' }, { num: '120+', label: 'Organic followers gained' }, { num: '4-person', label: 'Team led end-to-end' }, { num: '2 weeks', label: 'To hit all targets' }]
-  },
-  proj6: {
-    num: '06', title: 'Integrated Campaign Execution', client: 'Bank BCA × Unictive Media',
-    year: '2023', type: 'Digital Campaign / Interactive Content', role: 'Project Manager',
-    tags: ['Banking', 'Campaign', 'Interactive', 'Project Management'], imgSrc: '', images: [],
-    brief: 'Bank BCA required a coordinated interactive digital campaign — combining digital touchpoints with experiential elements to deepen brand engagement.',
-    approach: 'Served as the central coordination point between the bank\'s marketing team and internal production team. Managed briefing sessions, scope definition, milestone tracking, and client communications throughout.',
-    results: [{ num: 'On time', label: 'Full delivery, no delays' }, { num: '100%', label: 'Brief satisfaction' }, { num: 'Repeat', label: 'Client — ongoing work' }, { num: '3', label: 'Campaign phases managed' }]
+    num: '03', title: 'Petualangan Paddle Pop on Roblox', client: 'Paddle Pop',
+    year: '2023', role: 'Project Manager',
+    tags: ['Gamification', 'Roblox'],
+    images: [
+      'Project_Media/Petualangan Paddle Pop/1.jpg',
+      'Project_Media/Petualangan Paddle Pop/2.jpg',
+      'Project_Media/Petualangan Paddle Pop/3.jpg'
+    ],
+    overview: `Paddle Pop set out to create a branded game experience on Roblox, building an engaging virtual world for a young, digital-first audience while reinforcing the brand identity. The project brought the brand into an interactive gaming environment where players could explore and engage with the experience.`,
+    roleDetails: `Managed project scope and timeline, and coordinated communication between the client, creative team, and Roblox developers. Helped maintain brand consistency throughout the game experience while aligning the teams toward the planned delivery.`,
+    challenge: `The project required the brand experience to translate into a cohesive and engaging Roblox world. This involved aligning client expectations, creative direction, and game development within an agreed scope and timeline.`,
+    execution: `• Managed project scope and timeline throughout the delivery process.
+• Coordinated communication and alignment between the client, creative team, and Roblox developers.
+• Helped ensure the game world remained consistent with the brand direction.
+• Coordinated the teams through development and delivery milestones.
+• Supported the project through its launch on the Roblox platform.`,
+    deliverables: `• A branded Paddle Pop game experience on Roblox
+• An interactive virtual world designed for player exploration and engagement
+• A game experience aligned with Paddle Pop’s brand identity`,
+    outcome: `• Successfully launched on the Roblox platform.
+• Delivered the full project on time, according to the project information recorded in the portfolio source sheet.`,
+    source: 'https://unictive.com/titan/detail/QEBU'
   }
 };
 
@@ -965,41 +1052,36 @@ function openModal(id) {
   // Build slideshow from images array or single imgSrc
   var images = p.images || (p.imgSrc ? [p.imgSrc] : []);
   var imgHTML = buildSlideshow(images, p.title);
-  // var resultsHTML = p.results.map(function(r) {
-  //   return '<div class="result-card"><div class="result-num">' + r.num + '</div><div class="result-label">' + r.label + '</div></div>';
-  // }).join('');
+  var videoHTML = buildVideo(p);
+  var detailClass = videoHTML ? 'project-media-grid' : 'project-media-grid no-video';
   var tagHTML = p.tags.map(function(t) { return '<span class="tag">' + t + '</span>'; }).join('');
-
-  var resultsHTML = Array.isArray(p.results)
-  ? '<ul>' + p.results.map(function(r) {
-      return '<li>' + r + '</li>';
-    }).join('') + '</ul>'
-  : '<div class="modal-body">' + p.results + '</div>';
+  var challengeHTML = buildContentSection('The Challenge', p.challenge);
+  var executionHTML = buildContentSection('Project Execution', p.execution);
+  var roleHTML = buildContentSection('My Role', p.roleDetails);
 
   document.getElementById('modalContent').innerHTML =
-    '<div class="modal-section-tag">' + p.num + ' — ' + p.type + '</div>' +
-    '<div class="modal-title">' + p.title + '</div>' +
-    '<div class="modal-client">' + p.client + '</div>' +
-    imgHTML +
-    '<div class="modal-meta">' +
-      '<div><div class="meta-item-label">Year</div><div class="meta-item-val">' + p.year + '</div></div>' +
-      '<div><div class="meta-item-label">My Role</div><div class="meta-item-val">' + p.role + '</div></div>' +
-      '<div><div class="meta-item-label">Project Type</div><div class="meta-item-val">' + p.type + '</div></div>' +
-      '<div><div class="meta-item-label">Client</div><div class="meta-item-val">' + p.client.split('×')[0].trim() + '</div></div>' +
+    '<div class="modal-section-tag">' + p.num + '</div>' +
+    '<div class="modal-title">' + escapeHTML(p.title) + '</div>' +
+    '<div class="modal-client">' + escapeHTML(p.client) + '</div>' +
+    '<div class="' + detailClass + '">' +
+      '<div class="project-gallery">' + imgHTML + '</div>' +
+      videoHTML +
     '</div>' +
-    '<div class="modal-h3">Brief</div>' +
-    '<div class="modal-body">' + p.brief + '</div>' +
-    '<hr class="modal-divider">' +
-    '<div class="modal-h3">My Approach</div>' +
-    '<div class="modal-body">' + p.approach + '</div>' +
-    '<hr class="modal-divider">' +
-    '<div class="modal-h3">Results</div>' +
-    '<div class="modal-body">' + resultsHTML + '</div>' +
-    // '<div class="modal-results">'</div>' +
-    // '<div class="modal-body">' + '<ul> <li> Successfully delivered a series of interactive installations combining custom software, embedded systems, and physical gameplay </li><li> Led the execution of diverse experiences, from AI-powered photo booths and digital games to hardware-driven activations such as a motion-based racing game, claw machine, and a giant console-inspired installation </li><li> Ensured all systems were stable, responsive, and optimized for high-traffic, on-ground event conditions </li><li> Successfully attracted and engaged a wide range of visitors through immersive, intuitive, and interactive experiences </li></ul>' + '</div>' +
-    // '<div class="modal-body">' + p.results + '</div>' +
-    
-    '<div class="modal-tags" style="margin-top:40px;">' + tagHTML + '</div>';
+    '<div class="modal-meta">' +
+      '<div><div class="meta-item-label">Year</div><div class="meta-item-val">' + escapeHTML(p.year) + '</div></div>' +
+      '<div><div class="meta-item-label">My Role</div><div class="meta-item-val">' + escapeHTML(p.role) + '</div></div>' +
+      '<div><div class="meta-item-label">Client</div><div class="meta-item-val">' + escapeHTML(p.client) + '</div></div>' +
+      '<div><div class="meta-item-label">Tags</div><div class="meta-tags">' + tagHTML + '</div></div>' +
+    '</div>' +
+    buildContentSection('Project Overview', p.overview) +
+    roleHTML +
+    '<div class="project-copy-grid">' +
+      challengeHTML +
+      executionHTML +
+    '</div>' +
+    buildContentSection('Project Deliverables', p.deliverables) +
+    buildContentSection('Project Outcome', p.outcome) +
+    buildSourceLink(p.source);
 
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -1025,6 +1107,91 @@ function buildSlideshow(images, title) {
     '<div class="slide-nav">' + dots + '</div>' +
     '<div class="slide-counter" id="slideCounter">1 / ' + images.length + '</div>' +
     '</div>';
+}
+
+function getYouTubeEmbedUrl(source) {
+  try {
+    var url = new URL(source, window.location.href);
+    var host = url.hostname.replace(/^www\./, '');
+    var videoId = '';
+    if (host === 'youtu.be') videoId = url.pathname.slice(1).split('/')[0];
+    if (host === 'youtube.com' || host === 'm.youtube.com') {
+      if (url.pathname.indexOf('/shorts/') === 0) videoId = url.pathname.split('/')[2];
+      if (url.pathname.indexOf('/embed/') === 0) videoId = url.pathname.split('/')[2];
+      if (url.pathname === '/watch') videoId = url.searchParams.get('v');
+    }
+    return videoId ? 'https://www.youtube.com/embed/' + encodeURIComponent(videoId) : source;
+  } catch (error) {
+    return source;
+  }
+}
+
+function escapeHTML(value) {
+  return String(value).replace(/[&<>"']/g, function(character) {
+    return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[character];
+  });
+}
+
+function formatProjectText(value) {
+  var lines = String(value || '').trim().split(/\r?\n/);
+  var html = '';
+  var listItems = [];
+  function flushList() {
+    if (listItems.length) {
+      html += '<ul class="project-content-list"><li>' + listItems.join('</li><li>') + '</li></ul>';
+      listItems = [];
+    }
+  }
+  lines.forEach(function(line) {
+    var trimmed = line.trim();
+    if (!trimmed) {
+      flushList();
+      return;
+    }
+    var bullet = trimmed.match(/^[-•*]\s+(.*)$/);
+    if (bullet) {
+      listItems.push(escapeHTML(bullet[1]));
+    } else {
+      flushList();
+      html += '<p>' + escapeHTML(trimmed) + '</p>';
+    }
+  });
+  flushList();
+  return html;
+}
+
+function buildContentSection(label, value, extraClass) {
+  if (!value || !String(value).trim()) return '';
+  return '<section class="project-content-section' + (extraClass ? ' ' + extraClass : '') + '">' +
+    '<div class="modal-h3">' + escapeHTML(label) + '</div>' +
+    '<div class="modal-body">' + formatProjectText(value) + '</div>' +
+    '</section>';
+}
+
+function buildSourceLink(source) {
+  if (!source || !String(source).trim()) return '';
+  var safeSource = escapeHTML(String(source).trim());
+  return '<div class="project-source"><div class="meta-item-label">Source</div>' +
+    '<a href="' + safeSource + '" target="_blank" rel="noopener noreferrer">' + safeSource + ' ↗</a></div>';
+}
+
+function buildVideo(project) {
+  if (!project.videoSrc) return '';
+  var safeTitle = project.title.replace(/"/g, '&quot;');
+  if (project.videoType === 'embed') {
+    var embedUrl = getYouTubeEmbedUrl(project.videoSrc);
+    var embedSrc = embedUrl + (embedUrl.indexOf('?') === -1 ? '?' : '&') +
+      'rel=0&playsinline=1&modestbranding=1&origin=' + encodeURIComponent(window.location.origin);
+    return '<div class="project-video-wrap">' +
+      '<iframe class="project-video" src="' + embedSrc + '" title="' + safeTitle + '" loading="lazy" referrerpolicy="strict-origin-when-cross-origin" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen" allowfullscreen></iframe>' +
+      '</div>';
+  }
+  var poster = project.videoPoster ? ' poster="' + project.videoPoster + '"' : '';
+  return '<div class="project-video-wrap">' +
+    '<video class="project-video" controls playsinline preload="metadata"' + poster + '>' +
+    '<source src="' + project.videoSrc + '" type="video/mp4">' +
+    'Your browser does not support video playback.' +
+    '</video></div>';
 }
 
 var currentSlide = 0;

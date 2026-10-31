@@ -1,0 +1,17 @@
+project_id,order,media_type,file_path,caption,is_thumbnail,status
+proj1,1,image,daihatsu1.jpg,,true,available
+proj1,2,image,daihatsu2.jpg,,false,available
+proj1,3,image,daihatsu3.jpg,,false,available
+proj1,4,image,daihatsu4.jpg,,false,available
+proj1,5,image,daihatsu5.jpg,,false,available
+proj1,6,image,daihatsu6.jpg,,false,available
+proj1,7,image,daihatsu7.jpg,,false,available
+proj1,8,image,daihatsu8.jpg,,false,available
+proj2,1,image,,,true,needs-upload
+proj3,1,image,,,true,needs-upload
+proj4,1,image,,,true,needs-upload
+proj5,1,image,,,true,needs-upload
+proj6,1,image,,,true,needs-upload
+proj7,1,image,,,true,needs-upload
+proj8,1,image,,,true,needs-upload
+proj9,1,image,,,true,needs-upload
